@@ -1,0 +1,1212 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卡密服务&资金管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade { animation: fadeIn 0.3s ease forwards; }
+        .card-shadow { box-shadow: 0 4px 20px rgba(0,0,0,0.08); }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen font-sans text-gray-800">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+        <!-- 标题区域 -->
+        <header class="text-center mb-10 animate-fade">
+            <h1 class="text-[clamp(1.8rem,4vw,2.5rem)] font-bold text-blue-600 mb-2">卡密服务&资金管理系统</h1>
+            <p class="text-gray-500">安全高效的卡密生成、管理与资金结算平台</p>
+        </header>
+
+        <!-- 主内容区 -->
+        <main class="bg-white rounded-xl p-6 card-shadow animate-fade" id="mainContent">
+            <!-- 主菜单 -->
+            <div id="mainMenu" class="block">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                    <button onclick="showRegister()" class="py-3 px-6 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path>
+                        </svg>
+                        用户注册
+                    </button>
+                    <button onclick="showUserLogin()" class="py-3 px-6 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors flex items-center justify-center">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3v-1m4 4h9"></path>
+                        </svg>
+                        用户登录
+                    </button>
+                    <button onclick="showAdminLogin()" class="py-3 px-6 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center justify-center md:col-span-2">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                        管理员登录
+                    </button>
+                </div>
+                <button onclick="exitSystem()" class="w-full py-3 px-6 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors mt-2">
+                    退出系统
+                </button>
+            </div>
+
+            <!-- 注册表单 -->
+            <div id="registerForm" class="hidden animate-fade">
+                <h2 class="text-xl font-bold mb-4 text-blue-600">新用户注册</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+                        <input type="text" id="regUsername" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="请设置用户名">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                        <input type="password" id="regPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="请设置密码">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">确认密码</label>
+                        <input type="password" id="regConfirmPwd" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="请确认密码">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">银行卡号</label>
+                        <input type="text" id="regBankCard" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none" placeholder="请输入银行卡号">
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="submitRegister()" class="flex-1 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">注册</button>
+                        <button onclick="backToMain()" class="flex-1 py-2 px-4 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors">返回</button>
+                    </div>
+                </div>
+                <div id="registerMsg" class="mt-3 text-center text-red-500"></div>
+            </div>
+
+            <!-- 用户登录表单 -->
+            <div id="userLoginForm" class="hidden animate-fade">
+                <h2 class="text-xl font-bold mb-4 text-green-600">用户登录</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+                        <input type="text" id="loginUsername" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none" placeholder="请输入用户名">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                        <input type="password" id="loginPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none" placeholder="请输入密码">
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="submitUserLogin()" class="flex-1 py-2 px-4 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">登录</button>
+                        <button onclick="backToMain()" class="flex-1 py-2 px-4 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors">返回</button>
+                    </div>
+                </div>
+                <div id="userLoginMsg" class="mt-3 text-center text-red-500"></div>
+            </div>
+
+            <!-- 管理员登录表单 -->
+            <div id="adminLoginForm" class="hidden animate-fade">
+                <h2 class="text-xl font-bold mb-4 text-purple-600">管理员登录</h2>
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+                        <input type="text" id="adminUsername" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none" value="admin" readonly>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">密码</label>
+                        <input type="password" id="adminPassword" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 outline-none" placeholder="请输入密码">
+                    </div>
+                    <div class="flex gap-3">
+                        <button onclick="submitAdminLogin()" class="flex-1 py-2 px-4 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">登录</button>
+                        <button onclick="backToMain()" class="flex-1 py-2 px-4 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors">返回</button>
+                    </div>
+                </div>
+                <div id="adminLoginMsg" class="mt-3 text-center text-red-500"></div>
+            </div>
+
+            <!-- 用户中心 -->
+            <div id="userDashboard" class="hidden animate-fade">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-green-600" id="userWelcome"></h2>
+                    <button onclick="logout()" class="py-1 px-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm">退出登录</button>
+                </div>
+                <div class="bg-gray-50 p-3 rounded-lg mb-6">
+                    <p class="text-gray-700"><span class="font-medium">账户余额：</span><span id="userBalance" class="text-green-600 font-bold">¥0.00</span></p>
+                    <p class="text-gray-700"><span class="font-medium">银行卡号：</span><span id="userBankCard">无</span></p>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button onclick="showServiceTypes()" class="py-3 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                        查看可购买服务
+                    </button>
+                    <button onclick="showBuyService()" class="py-3 px-4 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                        购买卡密
+                    </button>
+                    <button onclick="showActivateCard()" class="py-3 px-4 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                        激活卡密
+                    </button>
+                    <button onclick="showMyCards()" class="py-3 px-4 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        我的卡密
+                    </button>
+                    <button onclick="showRecharge()" class="py-3 px-4 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2h-2m-2 0H9m10 6h2m-2 0v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4m2 4h2m-2 0"></path>
+                        </svg>
+                        充值余额
+                    </button>
+                    <button onclick="showUnbindCard()" class="py-3 px-4 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12H9m12 0h-6m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        解绑卡密
+                    </button>
+                    <button onclick="showDeleteAccount()" class="py-3 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center md:col-span-2">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        注销账号
+                    </button>
+                </div>
+                <div id="userOperateMsg" class="mt-4 text-center text-red-500"></div>
+            </div>
+
+            <!-- 管理员中心 -->
+            <div id="adminDashboard" class="hidden animate-fade">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-bold text-purple-600">管理员中心</h2>
+                    <button onclick="logout()" class="py-1 px-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors text-sm">退出登录</button>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <button onclick="showGenerateCards()" class="py-3 px-4 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        批量生成卡密
+                    </button>
+                    <button onclick="showAllCards()" class="py-3 px-4 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                        </svg>
+                        查看所有卡密
+                    </button>
+                    <button onclick="showManageCardStatus()" class="py-3 px-4 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                        </svg>
+                        管理卡密状态
+                    </button>
+                    <button onclick="showCleanExpiredCards()" class="py-3 px-4 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                        清理过期卡密
+                    </button>
+                    <button onclick="showUserList()" class="py-3 px-4 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        查看用户列表
+                    </button>
+                    <button onclick="showEditUser()" class="py-3 px-4 bg-purple-500 text-white rounded-lg hover:bg-purple-600 transition-colors flex items-center">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                        </svg>
+                        修改用户信息
+                    </button>
+                </div>
+                <div id="adminOperateMsg" class="mt-4 text-center text-red-500"></div>
+            </div>
+        </main>
+
+        <!-- 操作弹窗 -->
+        <div id="operateModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-xl p-6 w-full max-w-md animate-fade">
+                <h3 class="text-lg font-bold mb-4" id="modalTitle"></h3>
+                <div id="modalContent" class="space-y-4 mb-6"></div>
+                <div class="flex gap-3 justify-end">
+                    <button onclick="closeModal()" class="py-2 px-4 bg-gray-300 text-gray-800 rounded-lg hover:bg-gray-400 transition-colors">取消</button>
+                    <button onclick="submitModalOperate()" class="py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">确认</button>
+                </div>
+                <div id="modalMsg" class="mt-3 text-center text-red-500"></div>
+            </div>
+        </div>
+
+        <!-- 底部信息 -->
+        <footer class="mt-10 text-center text-gray-500 text-sm">
+            <p>© 2025 卡密服务&资金管理系统 - 版权所有</p>
+        </footer>
+    </div>
+
+    <script>
+        // 初始化数据结构
+        let systemData = {
+            user_info: { "admin": ["admin888", "admin", 0.0, "无"] },
+            card_info: {},
+            user_cards: {}
+        };
+
+        // 当前登录状态
+        let currentUser = null;
+        let currentUserType = null;
+
+        // 模态框操作类型
+        let modalOperateType = "";
+
+        // 页面加载时初始化数据
+        window.onload = function() {
+            loadData();
+            autoUnbindExpiredCards();
+        };
+
+        // 加载本地存储数据
+        function loadData() {
+            const savedData = localStorage.getItem("cardServiceData");
+            if (savedData) {
+                try {
+                    systemData = JSON.parse(savedData);
+                } catch (e) {
+                    resetData();
+                }
+            } else {
+                resetData();
+            }
+        }
+
+        // 重置数据
+        function resetData() {
+            systemData = {
+                user_info: { "admin": ["admin888", "admin", 0.0, "无"] },
+                card_info: {},
+                user_cards: {}
+            };
+            saveData();
+        }
+
+        // 保存数据到本地存储
+        function saveData() {
+            localStorage.setItem("cardServiceData", JSON.stringify(systemData));
+        }
+
+        // 自动解绑过期卡密
+        function autoUnbindExpiredCards() {
+            const now = new Date();
+            let unbindCount = 0;
+
+            for (const [card, info] of Object.entries(systemData.card_info)) {
+                if (info.status === "已激活" && info.bind_user) {
+                    const validTime = new Date(info.valid_until);
+                    if (now > validTime) {
+                        const username = info.bind_user;
+                        // 从用户卡密列表移除
+                        if (systemData.user_cards[username] && systemData.user_cards[username].includes(card)) {
+                            systemData.user_cards[username] = systemData.user_cards[username].filter(item => item !== card);
+                        }
+                        // 更新卡密状态
+                        systemData.card_info[card].status = "已过期";
+                        systemData.card_info[card].bind_user = null;
+                        unbindCount++;
+                    }
+                }
+            }
+
+            if (unbindCount > 0) {
+                saveData();
+                showMsg("userOperateMsg", `【系统自动处理】${unbindCount}张到期卡密已完成自动解绑`, "green");
+            }
+        }
+
+        // 生成16位带分隔符的卡密
+        function generateCard(validSeconds, serviceType, price) {
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            const cardParts = [];
+            for (let i = 0; i < 4; i++) {
+                let part = '';
+                for (let j = 0; j < 4; j++) {
+                    part += chars[Math.floor(Math.random() * chars.length)];
+                }
+                cardParts.push(part);
+            }
+            const card = cardParts.join('-');
+
+            const now = new Date();
+            const validUntil = new Date(now.getTime() + validSeconds * 1000);
+
+            systemData.card_info[card] = {
+                status: "未售出",
+                create_time: now.toISOString().slice(0, 19).replace('T', ' '),
+                valid_until: validUntil.toISOString().slice(0, 19).replace('T', ' '),
+                activate_time: null,
+                bind_user: null,
+                service_type: serviceType,
+                price: price
+            };
+
+            saveData();
+            return card;
+        }
+
+        // 校验卡密有效性
+        function validateCard(card, skipStatusCheck = false) {
+            autoUnbindExpiredCards();
+            if (!systemData.card_info[card]) {
+                return [false, "卡密不存在"];
+            }
+
+            const info = systemData.card_info[card];
+            const validTime = new Date(info.valid_until);
+            const now = new Date();
+
+            if (now > validTime && ["未售出", "已售出"].includes(info.status)) {
+                systemData.card_info[card].status = "已过期";
+                saveData();
+                return [false, "卡密已过期"];
+            }
+
+            if (!skipStatusCheck) {
+                const statusMap = {
+                    "已激活": "卡密已被使用",
+                    "已禁用": "卡密已被禁用",
+                    "已过期": "卡密已过期",
+                    "未售出": "卡密未售出，无法激活"
+                };
+                if (statusMap[info.status]) {
+                    return [false, statusMap[info.status]];
+                }
+            }
+
+            return [true, "卡密有效"];
+        }
+
+        // 页面切换函数
+        function showRegister() {
+            hideAllSections();
+            document.getElementById("registerForm").classList.remove("hidden");
+        }
+
+        function showUserLogin() {
+            hideAllSections();
+            document.getElementById("userLoginForm").classList.remove("hidden");
+        }
+
+        function showAdminLogin() {
+            hideAllSections();
+            document.getElementById("adminLoginForm").classList.remove("hidden");
+        }
+
+        function showUserDashboard() {
+            hideAllSections();
+            document.getElementById("userDashboard").classList.remove("hidden");
+            document.getElementById("userWelcome").textContent = `欢迎回来，${currentUser}！`;
+            updateUserInfo();
+        }
+
+        function showAdminDashboard() {
+            hideAllSections();
+            document.getElementById("adminDashboard").classList.remove("hidden");
+        }
+
+        function backToMain() {
+            hideAllSections();
+            document.getElementById("mainMenu").classList.remove("hidden");
+            clearAllInputs();
+        }
+
+        function hideAllSections() {
+            document.querySelectorAll("#mainContent > div").forEach(section => {
+                section.classList.add("hidden");
+            });
+            clearAllMsgs();
+        }
+
+        // 清除所有输入框
+        function clearAllInputs() {
+            document.querySelectorAll("input").forEach(input => {
+                if (input.id !== "adminUsername") input.value = "";
+            });
+        }
+
+        // 清除所有提示信息
+        function clearAllMsgs() {
+            document.querySelectorAll("[id$='Msg']").forEach(el => {
+                el.textContent = "";
+                el.className = el.className.replace("text-green-500", "text-red-500");
+            });
+        }
+
+        // 显示提示信息
+        function showMsg(elId, msg, type = "red") {
+            const el = document.getElementById(elId);
+            el.textContent = msg;
+            el.className = `mt-3 text-center text-${type}-500`;
+        }
+
+        // 更新用户信息显示
+        function updateUserInfo() {
+            const [pwd, type, balance, bankCard] = systemData.user_info[currentUser];
+            document.getElementById("userBalance").textContent = `¥${balance.toFixed(2)}`;
+            document.getElementById("userBankCard").textContent = bankCard;
+        }
+
+        // 注册提交
+        function submitRegister() {
+            const username = document.getElementById("regUsername").value.trim();
+            const password = document.getElementById("regPassword").value.trim();
+            const confirmPwd = document.getElementById("regConfirmPwd").value.trim();
+            const bankCard = document.getElementById("regBankCard").value.trim();
+
+            if (!username) {
+                showMsg("registerMsg", "用户名不能为空！");
+                return;
+            }
+            if (systemData.user_info[username]) {
+                showMsg("registerMsg", "该用户名已被占用，请更换！");
+                return;
+            }
+            if (password !== confirmPwd) {
+                showMsg("registerMsg", "两次密码不一致，请重新输入！");
+                return;
+            }
+            if (!bankCard) {
+                showMsg("registerMsg", "银行卡号不能为空！");
+                return;
+            }
+
+            // 保存新用户
+            systemData.user_info[username] = [password, "user", 0.0, bankCard];
+            systemData.user_cards[username] = [];
+            saveData();
+
+            showMsg("registerMsg", `注册成功！欢迎你，${username}！`, "green");
+            setTimeout(() => {
+                backToMain();
+            }, 1500);
+        }
+
+        // 用户登录提交
+        function submitUserLogin() {
+            const username = document.getElementById("loginUsername").value.trim();
+            const password = document.getElementById("loginPassword").value.trim();
+
+            if (!systemData.user_info[username]) {
+                showMsg("userLoginMsg", "用户名不存在！");
+                return;
+            }
+
+            const [storedPwd, userType, balance, bankCard] = systemData.user_info[username];
+            if (storedPwd !== password) {
+                showMsg("userLoginMsg", "密码错误！");
+                return;
+            }
+
+            currentUser = username;
+            currentUserType = userType;
+            showUserDashboard();
+        }
+
+        // 管理员登录提交
+        function submitAdminLogin() {
+            const username = document.getElementById("adminUsername").value.trim();
+            const password = document.getElementById("adminPassword").value.trim();
+
+            if (username !== "admin" || password !== "admin888") {
+                showMsg("adminLoginMsg", "管理员账号密码错误！");
+                return;
+            }
+
+            currentUser = username;
+            currentUserType = "admin";
+            showAdminDashboard();
+        }
+
+        // 退出登录
+        function logout() {
+            currentUser = null;
+            currentUserType = null;
+            backToMain();
+        }
+
+        // 退出系统
+        function exitSystem() {
+            if (confirm("确定要退出系统吗？")) {
+                window.close();
+            }
+        }
+
+        // 打开模态框
+        function openModal(title, contentHtml, operateType) {
+            document.getElementById("modalTitle").textContent = title;
+            document.getElementById("modalContent").innerHTML = contentHtml;
+            modalOperateType = operateType;
+            document.getElementById("modalMsg").textContent = "";
+            document.getElementById("operateModal").classList.remove("hidden");
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById("operateModal").classList.add("hidden");
+        }
+
+        // 提交模态框操作
+        function submitModalOperate() {
+            switch (modalOperateType) {
+                case "showServiceTypes":
+                    showServiceTypesSubmit();
+                    break;
+                case "buyService":
+                    buyServiceSubmit();
+                    break;
+                case "activateCard":
+                    activateCardSubmit();
+                    break;
+                case "myCards":
+                    myCardsSubmit();
+                    break;
+                case "recharge":
+                    rechargeSubmit();
+                    break;
+                case "unbindCard":
+                    unbindCardSubmit();
+                    break;
+                case "deleteAccount":
+                    deleteAccountSubmit();
+                    break;
+                case "generateCards":
+                    generateCardsSubmit();
+                    break;
+                case "allCards":
+                    allCardsSubmit();
+                    break;
+                case "manageCardStatus":
+                    manageCardStatusSubmit();
+                    break;
+                case "cleanExpiredCards":
+                    cleanExpiredCardsSubmit();
+                    break;
+                case "userList":
+                    userListSubmit();
+                    break;
+                case "editUser":
+                    editUserSubmit();
+                    break;
+            }
+        }
+
+        // 用户操作 - 查看可购买服务
+        function showServiceTypes() {
+            const serviceTypes = [...new Set(
+                Object.values(systemData.card_info)
+                    .filter(info => info.status === "未售出")
+                    .map(info => info.service_type)
+            )];
+
+            if (serviceTypes.length === 0) {
+                openModal("可购买的服务类型", "<p class='text-center text-gray-500'>暂无可购买的服务类型！</p>", "showServiceTypes");
+                return;
+            }
+
+            let html = "<div class='space-y-2'>";
+            serviceTypes.forEach((type, idx) => {
+                const typeCards = Object.values(systemData.card_info).filter(info => info.status === "未售出" && info.service_type === type);
+                const price = typeCards[0]?.price || 0;
+                const remainCount = typeCards.length;
+                html += `<div class="p-2 border rounded-lg">
+                    <p><span class="font-medium">${idx + 1}. 服务类型：</span>${type}</p>
+                    <p><span class="font-medium">单价：</span>¥${price.toFixed(2)}</p>
+                    <p><span class="font-medium">剩余数量：</span>${remainCount}张</p>
+                </div>`;
+            });
+            html += "</div>";
+
+            openModal("可购买的服务类型", html, "showServiceTypes");
+        }
+
+        function showServiceTypesSubmit() {
+            closeModal();
+        }
+
+        // 用户操作 - 购买服务
+        function showBuyService() {
+            const serviceTypes = [...new Set(
+                Object.values(systemData.card_info)
+                    .filter(info => info.status === "未售出")
+                    .map(info => info.service_type)
+            )];
+
+            if (serviceTypes.length === 0) {
+                showMsg("userOperateMsg", "暂无可购买的服务类型！");
+                return;
+            }
+
+            let html = `
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">选择服务类型</label>
+                    <select id="buyServiceType" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        ${serviceTypes.map((type, idx) => {
+                            const price = Object.values(systemData.card_info).find(info => info.status === "未售出" && info.service_type === type)?.price || 0;
+                            return `<option value="${type}">${idx + 1}. ${type}（¥${price.toFixed(2)}）</option>`;
+                        }).join('')}
+                    </select>
+                </div>
+            `;
+
+            openModal("购买卡密", html, "buyService");
+        }
+
+        function buyServiceSubmit() {
+            const serviceType = document.getElementById("buyServiceType").value;
+            const [pwd, type, balance, bankCard] = systemData.user_info[currentUser];
+
+            // 获取该服务类型的未售出卡密
+            const unsoldCards = Object.entries(systemData.card_info)
+                .filter(([card, info]) => info.status === "未售出" && info.service_type === serviceType)
+                .map(([card, info]) => card);
+
+            if (unsoldCards.length === 0) {
+                showMsg("modalMsg", `该服务类型（${serviceType}）暂无可用卡密！`);
+                return;
+            }
+
+            // 随机选择一张卡密
+            const randomCard = unsoldCards[Math.floor(Math.random() * unsoldCards.length)];
+            const cardPrice = systemData.card_info[randomCard].price;
+
+            if (balance < cardPrice) {
+                showMsg("modalMsg", `余额不足！购买${serviceType}需¥${cardPrice.toFixed(2)}，当前余额¥${balance.toFixed(2)}`);
+                return;
+            }
+
+            // 扣减余额并更新状态
+            const newBalance = balance - cardPrice;
+            systemData.user_info[currentUser] = [pwd, type, newBalance, bankCard];
+            systemData.card_info[randomCard].status = "已售出";
+            systemData.card_info[randomCard].bind_user = currentUser;
+            systemData.user_cards[currentUser].push(randomCard);
+            saveData();
+
+            showMsg("modalMsg", `购买成功！随机分配卡密：${randomCard}\n花费：¥${cardPrice.toFixed(2)} | 剩余余额：¥${newBalance.toFixed(2)}`, "green");
+            updateUserInfo();
+            setTimeout(closeModal, 2000);
+        }
+
+        // 用户操作 - 激活卡密
+        function showActivateCard() {
+            const cardList = systemData.user_cards[currentUser] || [];
+            const unactivatedCards = cardList.filter(card => systemData.card_info[card].status === "已售出");
+
+            if (unactivatedCards.length === 0) {
+                showMsg("userOperateMsg", "你暂无已购买但未激活的卡密！");
+                return;
+            }
+
+            let html = `
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">选择要激活的卡密</label>
+                    <select id="activateCardSelect" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        ${unactivatedCards.map((card, idx) => {
+                            const info = systemData.card_info[card];
+                            return `<option value="${card}">${idx + 1}. ${card}（${info.service_type}，有效期至：${info.valid_until}）</option>`;
+                        }).join('')}
+                    </select>
+                </div>
+            `;
+
+            openModal("激活卡密", html, "activateCard");
+        }
+
+        function activateCardSubmit() {
+            const card = document.getElementById("activateCardSelect").value;
+            const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+
+            systemData.card_info[card].status = "已激活";
+            systemData.card_info[card].activate_time = now;
+            saveData();
+
+            const info = systemData.card_info[card];
+            showMsg("modalMsg", `激活成功！已激活服务：${info.service_type}，有效期至：${info.valid_until}`, "green");
+            setTimeout(closeModal, 1500);
+        }
+
+        // 用户操作 - 我的卡密
+        function showMyCards() {
+            autoUnbindExpiredCards();
+            const cardList = systemData.user_cards[currentUser] || [];
+
+            if (cardList.length === 0) {
+                openModal("我的卡密", "<p class='text-center text-gray-500'>你尚未购买任何卡密！</p>", "myCards");
+                return;
+            }
+
+            let html = `<div class="space-y-3 max-h-80 overflow-y-auto">`;
+            cardList.forEach((card, idx) => {
+                const info = systemData.card_info[card];
+                const statusDesc = info.status === "已激活" ? "已激活" : "已购买（未激活）";
+                html += `<div class="p-2 border rounded-lg">
+                    <p><span class="font-medium">${idx + 1}. 卡密：</span>${card}</p>
+                    <p><span class="font-medium">状态：</span>${statusDesc}</p>
+                    <p><span class="font-medium">服务类型：</span>${info.service_type}</p>
+                    <p><span class="font-medium">激活时间：</span>${info.activate_time || '未激活'}</p>
+                    <p><span class="font-medium">有效期至：</span>${info.valid_until}</p>
+                </div>`;
+            });
+            html += "</div>";
+
+            openModal(`我的卡密（共 ${cardList.length} 个）`, html, "myCards");
+        }
+
+        function myCardsSubmit() {
+            closeModal();
+        }
+
+        // 用户操作 - 充值余额
+        function showRecharge() {
+            let html = `
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">充值金额</label>
+                    <input type="number" id="rechargeAmount" class="w-full px-4 py-2 border border-gray-300 rounded-lg" min="0.01" step="0.01" placeholder="请输入充值金额">
+                </div>
+            `;
+
+            openModal("充值余额", html, "recharge");
+        }
+
+        function rechargeSubmit() {
+            const amount = parseFloat(document.getElementById("rechargeAmount").value);
+            if (isNaN(amount) || amount <= 0) {
+                showMsg("modalMsg", "请输入有效的充值金额！");
+                return;
+            }
+
+            const [pwd, type, balance, bankCard] = systemData.user_info[currentUser];
+            const newBalance = balance + amount;
+            systemData.user_info[currentUser] = [pwd, type, newBalance, bankCard];
+            saveData();
+
+            showMsg("modalMsg", `充值成功！当前余额：¥${newBalance.toFixed(2)}`, "green");
+            updateUserInfo();
+            setTimeout(closeModal, 1500);
+        }
+
+        // 用户操作 - 解绑卡密
+        function showUnbindCard() {
+            const cardList = systemData.user_cards[currentUser] || [];
+
+            if (cardList.length === 0) {
+                showMsg("userOperateMsg", "你暂无可解绑的卡密！");
+                return;
+            }
+
+            let html = `
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">选择要解绑的卡密</label>
+                    <select id="unbindCardSelect" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                        ${cardList.map((card, idx) => {
+                            const info = systemData.card_info[card];
+                            const statusDesc = info.status === "已激活" ? "已激活" : "已购买（未激活）";
+                            return `<option value="${card}">${idx + 1}. ${card}（${info.service_type} - ${statusDesc}）</option>`;
+                        }).join('')}
+                    </select>
+                </div>
+            `;
+
+            openModal("解绑卡密", html, "unbindCard");
+        }
+
+        function unbindCardSubmit() {
+            const card = document.getElementById("unbindCardSelect").value;
+
+            // 从用户卡密列表移除
+            systemData.user_cards[currentUser] = systemData.user_cards[currentUser].filter(item => item !== card);
+            // 更新卡密状态
+            systemData.card_info[card].bind_user = null;
+            if (systemData.card_info[card].status !== "已激活") {
+                systemData.card_info[card].status = "未售出";
+            }
+            saveData();
+
+            showMsg("modalMsg", `卡密 ${card} 已成功解绑！`, "green");
+            setTimeout(closeModal, 1500);
+        }
+
+        // 用户操作 - 注销账号
+        function showDeleteAccount() {
+            let html = `
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">请输入密码确认</label>
+                    <input type="password" id="deleteAccountPwd" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="输入当前账号密码">
+                    <p class="text-sm text-red-500 mt-2">警告：注销后所有数据将永久删除，不可恢复！</p>
+                </div>
+            `;
+
+            openModal("账号注销（不可逆操作）", html, "deleteAccount");
+        }
+
+        function deleteAccountSubmit() {
+            const password = document.getElementById("deleteAccountPwd").value;
+            const [storedPwd, type, balance, bankCard] = systemData.user_info[currentUser];
+
+            if (password !== storedPwd) {
+                showMsg("modalMsg", "密码错误，注销已取消！");
+                return;
+            }
+
+            // 清理卡密关联
+            const cardList = systemData.user_cards[currentUser] || [];
+            cardList.forEach(card => {
+                if (systemData.card_info[card]) {
+                    systemData.card_info[card].status = "已禁用";
+                    systemData.card_info[card].bind_user = null;
+                }
+            });
+
+            // 删除用户数据
+            delete systemData.user_info[currentUser];
+            delete systemData.user_cards[currentUser];
+            saveData();
+
+            showMsg("modalMsg", "账号注销成功！所有关联数据已清理。", "green");
+            setTimeout(() => {
+                closeModal();
+                logout();
+            }, 1500);
+        }
+
+        // 管理员操作 - 批量生成卡密
+        function showGenerateCards() {
+            let html = `
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">服务类型</label>
+                        <input type="text" id="genServiceType" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="如“会员1个月”">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">卡密单价</label>
+                        <input type="number" id="genPrice" class="w-full px-4 py-2 border border-gray-300 rounded-lg" min="0.01" step="0.01" placeholder="设置卡密单价">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">生成数量</label>
+                        <input type="number" id="genCount" class="w-full px-4 py-2 border border-gray-300 rounded-lg" min="1" placeholder="设置生成数量">
+                    </div>
+                    <div class="border-t pt-3">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">有效期设置</label>
+                        <div class="grid grid-cols-4 gap-2">
+                            <input type="number" id="genDays" class="w-full px-4 py-2 border border-gray-300 rounded-lg" min="0" placeholder="天">
+                            <input type="number" id="genHours" class="w-full px-4 py-2 border border-gray-300 rounded-lg" min="0" placeholder="时">
+                            <input type="number" id="genMinutes" class="w-full px-4 py-2 border border-gray-300 rounded-lg" min="0" placeholder="分">
+                            <input type="number" id="genSeconds" class="w-full px-4 py-2 border border-gray-300 rounded-lg" min="0" placeholder="秒">
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            openModal("批量生成服务卡密", html, "generateCards");
+        }
+
+        function generateCardsSubmit() {
+            const serviceType = document.getElementById("genServiceType").value.trim();
+            const price = parseFloat(document.getElementById("genPrice").value);
+            const count = parseInt(document.getElementById("genCount").value);
+            const days = parseInt(document.getElementById("genDays").value) || 0;
+            const hours = parseInt(document.getElementById("genHours").value) || 0;
+            const minutes = parseInt(document.getElementById("genMinutes").value) || 0;
+            const seconds = parseInt(document.getElementById("genSeconds").value) || 0;
+
+            if (!serviceType) {
+                showMsg("modalMsg", "服务类型不能为空！");
+                return;
+            }
+            if (isNaN(price) || price <= 0 || isNaN(count) || count <= 0) {
+                showMsg("modalMsg", "单价和数量需大于0！");
+                return;
+            }
+
+            const totalSeconds = days * 86400 + hours * 3600 + minutes * 60 + seconds;
+            if (totalSeconds <= 0) {
+                showMsg("modalMsg", "有效期需大于0秒！");
+                return;
+            }
+
+            // 批量生成卡密
+            for (let i = 0; i < count; i++) {
+                generateCard(totalSeconds, serviceType, price);
+            }
+
+            showMsg("modalMsg", `生成成功！共${count}张【${serviceType}】卡密，单价¥${price.toFixed(2)}`, "green");
+            setTimeout(closeModal, 1500);
+        }
+
+        // 管理员操作 - 查看所有卡密
+        function showAllCards() {
+            const cardInfo = systemData.card_info;
+            if (Object.keys(cardInfo).length === 0) {
+                openModal("卡密总览", "<p class='text-center text-gray-500'>暂无卡密数据！</p>", "allCards");
+                return;
+            }
+
+            // 按状态分组
+            const statusGroups = {};
+            Object.entries(cardInfo).forEach(([card, info]) => {
+                if (!statusGroups[info.status]) {
+                    statusGroups[info.status] = [];
+                }
+                statusGroups[info.status].push([card, info]);
+            });
+
+            let html = `<div class="space-y-4 max-h-80 overflow-y-auto">`;
+            Object.entries(statusGroups).forEach(([status, cards]) => {
+                html += `<div>
+                    <h4 class="font-medium text-blue-600">【${status}】（${cards.length} 个）</h4>
+                    <div class="space-y-2 pl-3">
+                        ${cards.slice(0, 5).map(([card, info]) => {
+                            const bindUser = info.bind_user || "未绑定";
+                            return `<div class="p-1 border rounded text-sm">
+                                卡密：${card} | 服务：${info.service_type} | 价格：¥${info.price.toFixed(2)} | 绑定用户：${bindUser}
+                            </div>`;
+                        }).join('')}
+                        ${cards.length > 5 ? `<p class="text-sm text-gray-500">... 还有 ${cards.length - 5} 个未展示</p>` : ''}
+                    </div>
+                </div>`;
+            });
+            html += "</div>";
+
+            openModal(`卡密总览（共 ${Object.keys(cardInfo).length} 个）`, html, "allCards");
+        }
+
+        function allCardsSubmit() {
+            closeModal();
+        }
+
+        // 管理员操作 - 管理卡密状态
+        function showManageCardStatus() {
+            let html = `
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">卡密</label>
+                        <input type="text" id="manageCardNo" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="请输入要操作的卡密">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">操作类型</label>
+                        <select id="manageCardOp" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                            <option value="disable">1-禁用</option>
+                            <option value="restore">2-恢复为未售出</option>
+                        </select>
+                    </div>
+                </div>
+            `;
+
+            openModal("管理卡密状态", html, "manageCardStatus");
+        }
+
+        function manageCardStatusSubmit() {
+            const card = document.getElementById("manageCardNo").value.trim().toUpperCase();
+            const op = document.getElementById("manageCardOp").value;
+
+            const [isValid, msg] = validateCard(card, true);
+            if (!isValid) {
+                showMsg("modalMsg", `操作失败：${msg}`);
+                return;
+            }
+
+            const currentStatus = systemData.card_info[card].status;
+
+            if (op === "disable") {
+                if (currentStatus === "已禁用") {
+                    showMsg("modalMsg", "该卡密已禁用！");
+                    return;
+                }
+                systemData.card_info[card].status = "已禁用";
+                saveData();
+                showMsg("modalMsg", `卡密 ${card} 已禁用！`, "green");
+            } else if (op === "restore") {
+                if (["未售出", "已激活"].includes(currentStatus)) {
+                    showMsg("modalMsg", "仅已过期/已禁用卡密可恢复！");
+                    return;
+                }
+                systemData.card_info[card].status = "未售出";
+                saveData();
+                showMsg("modalMsg", `卡密 ${card} 已恢复为未售出！`, "green");
+            }
+
+            setTimeout(closeModal, 1500);
+        }
+
+        // 管理员操作 - 清理过期卡密
+        function showCleanExpiredCards() {
+            const now = new Date();
+            const expiredCards = Object.entries(systemData.card_info)
+                .filter(([card, info]) => {
+                    try {
+                        return new Date(info.valid_until) < now;
+                    } catch (e) {
+                        return false;
+                    }
+                })
+                .map(([card, info]) => card);
+
+            if (expiredCards.length === 0) {
+                openModal("清理过期卡密", "<p class='text-center text-gray-500'>无过期卡密可清理！</p>", "cleanExpiredCards");
+                return;
+            }
+
+            let html = `
+                <div>
+                    <p class="mb-2">确认清理 <span class="text-red-600 font-medium">${expiredCards.length}</span> 张过期卡密？</p>
+                    <p class="text-sm text-red-500">清理后将永久删除，不可恢复！</p>
+                </div>
+            `;
+
+            openModal("清理过期卡密", html, "cleanExpiredCards");
+        }
+
+        function cleanExpiredCardsSubmit() {
+            const now = new Date();
+            const expiredCards = Object.entries(systemData.card_info)
+                .filter(([card, info]) => {
+                    try {
+                        return new Date(info.valid_until) < now;
+                    } catch (e) {
+                        return false;
+                    }
+                })
+                .map(([card, info]) => card);
+
+            // 删除过期卡密
+            expiredCards.forEach(card => {
+                delete systemData.card_info[card];
+                // 同步清理用户卡密列表
+                Object.values(systemData.user_cards).forEach(cards => {
+                    const idx = cards.indexOf(card);
+                    if (idx !== -1) cards.splice(idx, 1);
+                });
+            });
+
+            saveData();
+            showMsg("modalMsg", `清理完成！共删除 ${expiredCards.length} 张过期卡密`, "green");
+            setTimeout(closeModal, 1500);
+        }
+
+        // 管理员操作 - 查看用户列表
+        function showUserList() {
+            const users = Object.entries(systemData.user_info)
+                .filter(([username, info]) => info[1] === "user");
+
+            if (users.length === 0) {
+                openModal("用户列表", "<p class='text-center text-gray-500'>暂无普通用户！</p>", "userList");
+                return;
+            }
+
+            let html = `<div class="space-y-2 max-h-80 overflow-y-auto">`;
+            users.forEach(([username, info]) => {
+                const [pwd, type, balance, bankCard] = info;
+                const cardCount = systemData.user_cards[username]?.length || 0;
+                html += `<div class="p-2 border rounded-lg">
+                    <p><span class="font-medium">用户名：</span>${username}</p>
+                    <p><span class="font-medium">余额：</span>¥${balance.toFixed(2)}</p>
+                    <p><span class="font-medium">银行卡：</span>${bankCard}</p>
+                    <p><span class="font-medium">卡密数：</span>${cardCount}</p>
+                </div>`;
+            });
+            html += "</div>";
+
+            openModal("用户列表（含余额/银行卡）", html, "userList");
+        }
+
+        function userListSubmit() {
+            closeModal();
+        }
+
+        // 管理员操作 - 修改用户信息
+        function showEditUser() {
+            let html = `
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">用户名</label>
+                        <input type="text" id="editUsername" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="请输入用户名">
+                    </div>
+                    <div id="editUserInfo" class="hidden">
+                        <div class="border-t pt-3">
+                            <label class="block text-sm font-medium text-gray-700 mb-1">操作类型</label>
+                            <select id="editUserOp" class="w-full px-4 py-2 border border-gray-300 rounded-lg mb-3">
+                                <option value="balance">1. 修改余额</option>
+                                <option value="bankcard">2. 修改银行卡号</option>
+                            </select>
+                            <div id="editBalanceDiv">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">新余额</label>
+                                <input type="number" id="editNewBalance" class="w-full px-4 py-2 border border-gray-300 rounded-lg" min="0" step="0.01" placeholder="请输入新余额">
+                            </div>
+                            <div id="editBankCardDiv" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-1">新银行卡号</label>
+                                <input type="text" id="editNewBankCard" class="w-full px-4 py-2 border border-gray-300 rounded-lg" placeholder="请输入新银行卡号">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            openModal("修改用户余额/银行卡号", html, "editUser");
+
+            // 监听用户名输入
+            setTimeout(() => {
+                document.getElementById("editUsername").addEventListener("input", function() {
+                    const username = this.value.trim();
+                    const editUserInfo = document.getElementById("editUserInfo");
+                    if (systemData.user_info[username]) {
+                        const [pwd, type, balance, bankCard] = systemData.user_info[username];
+                        editUserInfo.classList.remove("hidden");
+                        showMsg("modalMsg", `当前信息：余额¥${balance.toFixed(2)} | 银行卡${bankCard}`, "green");
+                    } else {
+                        editUserInfo.classList.add("hidden");
+                        showMsg("modalMsg", "用户不存在！");
+                    }
+                });
+
+                // 监听操作类型切换
+                document.getElementById("editUserOp").addEventListener("change", function() {
+                    const op = this.value;
+                    document.getElementById("editBalanceDiv").classList.toggle("hidden", op !== "balance");
+                    document.getElementById("editBankCardDiv").classList.toggle("hidden", op !== "bankcard");
+                });
+            }, 100);
+        }
+
+        function editUserSubmit() {
+            const username = document.getElementById("editUsername").value.trim();
+            const op = document.getElementById("editUserOp").value;
+
+            if (!systemData.user_info[username]) {
+                showMsg("modalMsg", "用户不存在！");
+                return;
+            }
+
+            const [pwd, type, balance, bankCard] = systemData.user_info[username];
+
+            if (op === "balance") {
+                const newBalance = parseFloat(document.getElementById("editNewBalance").value);
+                if (isNaN(newBalance) || newBalance < 0) {
+                    showMsg("modalMsg", "余额不能为负！");
+                    return;
+                }
+                systemData.user_info[username] = [pwd, type, newBalance, bankCard];
+                saveData();
+                showMsg("modalMsg", `余额已更新为¥${newBalance.toFixed(2)}`, "green");
+            } else if (op === "bankcard") {
+                const newBankCard = document.getElementById("editNewBankCard").value.trim();
+                if (!newBankCard) {
+                    showMsg("modalMsg", "银行卡号不能为空！");
+                    return;
+                }
+                systemData.user_info[username] = [pwd, type, balance, newBankCard];
+                saveData();
+                showMsg("modalMsg", `银行卡号已更新为${newBankCard}`, "green");
+            }
+
+            setTimeout(closeModal, 1500);
+        }
+    </script>
+</body>
+</html>
